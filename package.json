@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "pearjs-android",
+  "version": "0.0.0",
+  "description": "Example of embedding 🍐.js in an Android application",
+  "workspaces": [
+    "vendor/*"
+  ],
+  "scripts": {
+    "test": "standard",
+    "install": "pear-dev vendor sync"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holepunchto/pearjs-android.git"
+  },
+  "author": "Holepunch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/holepunchto/pearjs-android/issues"
+  },
+  "homepage": "https://github.com/holepunchto/pearjs-android#readme",
+  "devDependencies": {
+    "standard": "^17.0.0"
+  }
+}

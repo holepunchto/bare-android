@@ -1,0 +1,27 @@
+plugins {
+  id 'com.android.application'
+}
+
+android {
+  namespace 'com.holepunch.pear'
+  compileSdk 33
+
+  defaultConfig {
+    applicationId 'com.holepunch.pear'
+    minSdk 21
+    targetSdk 33
+    versionCode 1
+    versionName '1.0'
+  }
+
+  externalNativeBuild {
+    cmake {
+      version '3.25.2'
+      path 'src/main/c/CMakeLists.txt'
+    }
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+}

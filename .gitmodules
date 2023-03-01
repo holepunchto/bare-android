@@ -1,0 +1,3 @@
+[submodule "vendor/pearjs"]
+	path = vendor/pearjs
+	url = git@github.com:holepunchto/pearjs-next.git
