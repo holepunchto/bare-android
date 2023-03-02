@@ -8,7 +8,9 @@
   ],
   "scripts": {
     "test": "standard",
-    "install": "pear-dev vendor sync"
+    "install": "pear-dev vendor sync",
+    "build": "pear-dev build",
+    "start": "pear-dev android run"
   },
   "repository": {
     "type": "git",
