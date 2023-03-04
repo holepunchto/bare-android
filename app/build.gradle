@@ -8,10 +8,16 @@ android {
 
   defaultConfig {
     applicationId 'com.holepunch.pear'
-    minSdk 21
+    minSdk 24
     targetSdk 33
     versionCode 1
     versionName '1.0'
+
+    externalNativeBuild {
+      cmake {
+        targets 'pear_android_shared'
+      }
+    }
   }
 
   externalNativeBuild {

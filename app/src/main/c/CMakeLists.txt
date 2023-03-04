@@ -22,3 +22,35 @@ add_subdirectory(
   vendor/pearjs
   EXCLUDE_FROM_ALL
 )
+
+add_library(pear_android OBJECT)
+
+set_target_properties(
+  pear_android
+  PROPERTIES
+  C_STANDARD 99
+  POSITION_INDEPENDENT_CODE ON
+)
+
+target_sources(
+  pear_android
+  PRIVATE
+    MainActivity.c
+)
+
+target_include_directories(
+  pear_android
+  PUBLIC
+    $<TARGET_PROPERTY:pear,INTERFACE_INCLUDE_DIRECTORIES>
+)
+
+find_library(log log)
+
+add_library(pear_android_shared SHARED $<TARGET_OBJECTS:pear_android>)
+
+target_link_libraries(
+  pear_android_shared
+  PRIVATE
+    ${log}
+    $<LINK_LIBRARY:WHOLE_ARCHIVE,pear_static>
+)
