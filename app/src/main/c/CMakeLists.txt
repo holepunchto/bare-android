@@ -32,9 +32,17 @@ set_target_properties(
   POSITION_INDEPENDENT_CODE ON
 )
 
+add_pear_bundle(
+  CWD ..
+  ENTRY js/app.js
+  OUT c/MainActivity.bundle.h
+  TARGET c
+)
+
 target_sources(
   pear_android
   PRIVATE
+    MainActivity.bundle.h
     MainActivity.c
 )
 
