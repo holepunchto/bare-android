@@ -33,9 +33,9 @@ set_target_properties(
 )
 
 add_pear_bundle(
-  CWD ..
-  ENTRY js/app.js
-  OUT c/MainActivity.bundle.h
+  CWD ${PEAR_MODULE_DIR}
+  ENTRY app/src/main/js/app.js
+  OUT app/src/main/c/MainActivity.bundle.h
   TARGET c
 )
 
