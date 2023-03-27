@@ -20,6 +20,12 @@ android {
     }
   }
 
+  buildTypes {
+    release {
+      signingConfig signingConfigs.debug
+    }
+  }
+
   externalNativeBuild {
     cmake {
       version '3.25.2'
