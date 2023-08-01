@@ -32,7 +32,7 @@ set_target_properties(
   POSITION_INDEPENDENT_CODE ON
 )
 
-add_pear_bundle(
+add_bare_bundle(
   CWD ${BARE_MODULE_DIR}
   ENTRY app/src/main/js/app.js
   OUT app/src/main/c/MainActivity.bundle.h
