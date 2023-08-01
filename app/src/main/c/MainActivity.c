@@ -20,10 +20,10 @@ Java_com_holepunch_pear_MainActivity_init (JNIEnv *env, jobject self) {
 
   uv_buf_t source = uv_buf_init((char *) bundle, bundle_len);
 
-  err = bare_run(&pear, "/main.bundle", &source);
+  err = bare_run(bare, "/main.bundle", &source);
   assert(err == 0);
 
   int exit_code;
-  err = bare_teardown(&pear, &exit_code);
+  err = bare_teardown(bare, &exit_code);
   assert(err == 0);
 }
