@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-  namespace 'com.holepunch.pear'
+  namespace 'com.holepunch.bare'
   compileSdk 33
 
   defaultConfig {
-    applicationId 'com.holepunch.pear'
+    applicationId 'com.holepunch.bare'
     minSdk 24
     targetSdk 33
     versionCode 1
@@ -15,7 +15,7 @@ android {
 
     externalNativeBuild {
       cmake {
-        targets 'pear_android_shared'
+        targets 'bare_android_shared'
       }
     }
   }
@@ -28,7 +28,7 @@ android {
 
   externalNativeBuild {
     cmake {
-      version '3.25.2'
+      version '3.26.4'
       path 'src/main/c/CMakeLists.txt'
     }
   }

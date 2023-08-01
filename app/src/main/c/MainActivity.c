@@ -6,7 +6,7 @@
 #include "MainActivity.bundle.h"
 
 JNIEXPORT void JNICALL
-Java_com_holepunch_pear_MainActivity_init (JNIEnv *env, jobject self) {
+Java_com_holepunch_bare_MainActivity_init (JNIEnv *env, jobject self) {
   int err;
 
   int argc = 0;

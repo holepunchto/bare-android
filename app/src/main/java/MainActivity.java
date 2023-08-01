@@ -1,4 +1,4 @@
-package com.holepunch.pear;
+package com.holepunch.bare;
 
 import android.app.Activity;
 import android.os.Bundle;
