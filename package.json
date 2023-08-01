@@ -1,27 +1,27 @@
 {
   "private": true,
-  "name": "pearjs-android",
+  "name": "bare-android",
   "version": "0.0.0",
-  "description": "Example of embedding 🍐.js in an Android application",
+  "description": "Example of embedding Bare in an Android application",
   "workspaces": [
     "vendor/*"
   ],
   "scripts": {
     "test": "standard",
-    "install": "pear-dev vendor sync",
-    "build": "pear-dev build",
-    "start": "pear-dev android run"
+    "install": "bare-dev vendor sync",
+    "build": "bare-dev build",
+    "start": "bare-dev android run"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/holepunchto/pearjs-android.git"
+    "url": "git+https://github.com/holepunchto/bare-android.git"
   },
   "author": "Holepunch",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/holepunchto/pearjs-android/issues"
+    "url": "https://github.com/holepunchto/bare-android/issues"
   },
-  "homepage": "https://github.com/holepunchto/pearjs-android#readme",
+  "homepage": "https://github.com/holepunchto/bare-android#readme",
   "devDependencies": {
     "standard": "^17.0.0"
   }
