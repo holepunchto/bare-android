@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 public class MainActivity extends Activity {
   static {
-    System.loadLibrary("pear_android_shared");
+    System.loadLibrary("bare_android_shared");
   }
 
   public native void init();
