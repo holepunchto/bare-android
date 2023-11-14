@@ -10,7 +10,7 @@ list(APPEND CMAKE_MODULE_PATH ${bare_cmake})
 project(
   bare_android
   VERSION 1.0
-  LANGUAGES C CXX
+  LANGUAGES C
 )
 
 include(bare)
@@ -28,7 +28,7 @@ add_library(bare_android OBJECT)
 set_target_properties(
   bare_android
   PROPERTIES
-  C_STANDARD 99
+  C_STANDARD 11
   POSITION_INDEPENDENT_CODE ON
 )
 
