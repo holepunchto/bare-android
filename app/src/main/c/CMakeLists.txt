@@ -15,10 +15,8 @@ project(
 
 include(bare)
 
-set(BARE_MODULE_DIR ${PROJECT_SOURCE_DIR}/../../../..)
-
 add_subdirectory(
-  ${BARE_MODULE_DIR}/vendor/bare
+  ../../../../vendor/bare
   vendor/bare
   EXCLUDE_FROM_ALL
 )
@@ -33,7 +31,7 @@ set_target_properties(
 )
 
 add_bare_bundle(
-  CWD ${BARE_MODULE_DIR}
+  CWD ../../../..
   ENTRY app/src/main/js/app.js
   OUT app/src/main/c/MainActivity.bundle.h
   TARGET c
