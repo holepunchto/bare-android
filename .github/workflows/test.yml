@@ -33,6 +33,5 @@ jobs:
       with:
         distribution: temurin
         java-version: ${{ matrix.java }}
-        cache: gradle
     - run: npm install -g bare-dev
     - run: bare-dev build
