@@ -1,0 +1,39 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    strategy:
+      matrix:
+        node: [lts/*]
+        java: [21]
+        os: [ubuntu-latest]
+        include:
+        - os: ubuntu-latest
+          platform: android
+          arch: x64
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.platform }}-${{ matrix.arch }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - uses: actions/cache@v4
+      with:
+        path: vendor/bare/corestore
+        key: corestore-${{ matrix.platform }}-${{ matrix.name }}
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node }}
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: ${{ matrix.java }}
+        cache: gradle
+    - run: npm install -g bare-dev
+    - run: bare-dev build
