@@ -7,13 +7,13 @@ execute_process(
 
 list(APPEND CMAKE_MODULE_PATH ${bare_cmake})
 
-project(
-  bare_android
-  VERSION 1.0
-  LANGUAGES C
-)
+project(bare_android C)
 
 include(bare)
+
+install_node_modules(
+  WORKING_DIRECTORY ../../../..
+)
 
 add_subdirectory(
   ../../../../vendor/bare
@@ -31,10 +31,10 @@ set_target_properties(
 )
 
 add_bare_bundle(
-  CWD ../../../..
   ENTRY app/src/main/js/app.js
   OUT app/src/main/c/MainActivity.bundle.h
   TARGET c
+  WORKING_DIRECTORY ../../../..
 )
 
 target_sources(
@@ -50,13 +50,12 @@ target_include_directories(
     $<TARGET_PROPERTY:bare,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
-find_library(log log)
-
-add_library(bare_android_shared SHARED $<TARGET_OBJECTS:bare_android>)
+add_library(bare_android_shared SHARED)
 
 target_link_libraries(
   bare_android_shared
+  PUBLIC
+    bare_android
   PRIVATE
-    ${log}
     $<LINK_LIBRARY:WHOLE_ARCHIVE,bare_static>
 )

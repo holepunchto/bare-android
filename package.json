@@ -1,16 +1,9 @@
 {
   "private": true,
   "name": "bare-android",
-  "version": "0.0.0",
   "description": "Example of embedding Bare in an Android application",
-  "workspaces": [
-    "vendor/*"
-  ],
   "scripts": {
-    "test": "standard",
-    "install": "bare-dev vendor sync",
-    "build": "bare-dev build",
-    "start": "bare-dev android run"
+    "test": "standard"
   },
   "repository": {
     "type": "git",
