@@ -33,6 +33,6 @@ jobs:
       with:
         distribution: temurin
         java-version: ${{ matrix.java }}
-    - run: yes | sdkmanager --licenses
     - run: npm install -g bare-dev
+    - run: bare-dev android sdk licenses accept
     - run: bare-dev build
