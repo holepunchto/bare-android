@@ -4,12 +4,13 @@ plugins {
 
 android {
   namespace 'com.holepunch.bare'
-  compileSdk 33
+  compileSdk 34
+  ndkVersion '27.0.11718014'
 
   defaultConfig {
     applicationId 'com.holepunch.bare'
     minSdk 24
-    targetSdk 33
+    targetSdk 34
     versionCode 1
     versionName '1.0'
 
@@ -28,7 +29,7 @@ android {
 
   externalNativeBuild {
     cmake {
-      version '3.28.3'
+      version '3.29.3'
       path 'src/main/c/CMakeLists.txt'
     }
   }
