@@ -10,11 +10,12 @@ jobs:
   test:
     strategy:
       matrix:
-        node: [lts/*]
-        java: [21]
-        os: [ubuntu-latest]
         include:
         - os: ubuntu-latest
+          platform: android
+        - os: macos-latest
+          platform: android
+        - os: windows-latest
           platform: android
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.platform }}
@@ -28,11 +29,11 @@ jobs:
         key: corestore-${{ matrix.platform }}
     - uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node }}
+        node-version: lts/*
     - uses: actions/setup-java@v4
       with:
         distribution: temurin
-        java-version: ${{ matrix.java }}
+        java-version: 21
     - run: npm install -g bare-dev
     - run: bare-dev android sdk licenses accept
     - run: bare-dev build
