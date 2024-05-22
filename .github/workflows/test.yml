@@ -12,13 +12,16 @@ jobs:
       matrix:
         include:
         - os: ubuntu-latest
+          host: linux
           platform: android
         - os: macos-latest
+          host: darwin
           platform: android
         - os: windows-latest
+          host: win32
           platform: android
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.platform }}
+    name: ${{ matrix.host }}-${{ matrix.platform }}
     steps:
     - uses: actions/checkout@v4
       with:
