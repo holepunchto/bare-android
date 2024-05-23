@@ -1,12 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
 
-execute_process(
-  COMMAND bare-dev paths cmake
-  OUTPUT_VARIABLE bare_cmake
-)
-
-list(APPEND CMAKE_MODULE_PATH ${bare_cmake})
-
 project(bare_android C)
 
 include(bare)

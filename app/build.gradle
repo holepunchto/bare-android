@@ -17,6 +17,7 @@ android {
     externalNativeBuild {
       cmake {
         targets 'bare_android_shared'
+        arguments "-DCMAKE_MODULE_PATH=$System.env.CMAKE_MODULE_PATH"
       }
     }
   }
