@@ -3,10 +3,10 @@
 #include <jni.h>
 #include <uv.h>
 
-#include "MainActivity.bundle.h"
+#include "Worker.bundle.h"
 
 JNIEXPORT void JNICALL
-Java_com_holepunch_bare_MainActivity_init (JNIEnv *env, jobject self) {
+Java_com_holepunch_bare_Worker_run (JNIEnv *env, jobject self) {
   int err;
 
   int argc = 0;

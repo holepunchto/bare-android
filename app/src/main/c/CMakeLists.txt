@@ -25,7 +25,7 @@ set_target_properties(
 
 add_bare_bundle(
   ENTRY app/src/main/js/app.js
-  OUT app/src/main/c/MainActivity.bundle.h
+  OUT app/src/main/c/Worker.bundle.h
   TARGET c
   WORKING_DIRECTORY ../../../..
 )
@@ -33,8 +33,8 @@ add_bare_bundle(
 target_sources(
   bare_android
   PRIVATE
-    MainActivity.bundle.h
-    MainActivity.c
+    Worker.bundle.h
+    Worker.c
 )
 
 target_include_directories(
