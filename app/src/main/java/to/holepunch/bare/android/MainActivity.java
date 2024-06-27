@@ -12,6 +12,7 @@ public class MainActivity extends Activity {
   }
 
   Worklet worklet;
+  IPC ipc;
 
   @Override
   public void
@@ -26,7 +27,7 @@ public class MainActivity extends Activity {
       throw new RuntimeException(e);
     }
 
-    IPC ipc = new IPC(worklet);
+    ipc = new IPC(worklet);
 
     ipc.read("UTF-8", (data, exception) -> Log.d("bare", data));
     ipc.write("Hello from Android", "UTF-8");
@@ -52,6 +53,12 @@ public class MainActivity extends Activity {
   public void
   onDestroy () {
     super.onDestroy();
+
+    try {
+      ipc.close();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
 
     worklet.terminate();
     worklet = null;
