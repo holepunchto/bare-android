@@ -2,6 +2,8 @@ package to.holepunch.bare.android;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import to.holepunch.bare.kit.IPC;
 import to.holepunch.bare.kit.Worklet;
 
 public class MainActivity extends Activity {
@@ -23,6 +25,11 @@ public class MainActivity extends Activity {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+
+    IPC ipc = new IPC(worklet);
+
+    ipc.read("UTF-8", (data, exception) -> Log.d("bare", data));
+    ipc.write("Hello from Android", "UTF-8");
   }
 
   @Override
@@ -38,7 +45,7 @@ public class MainActivity extends Activity {
   onResume () {
     super.onResume();
 
-    worklet.suspend();
+    worklet.resume();
   }
 
   @Override
@@ -47,7 +54,6 @@ public class MainActivity extends Activity {
     super.onDestroy();
 
     worklet.terminate();
-
     worklet = null;
   }
 }
