@@ -37,6 +37,6 @@ jobs:
       with:
         distribution: temurin
         java-version: 21
-    - run: npm install -g bare-dev cmake-runtime
+    - run: npm install -g bare-dev
     - run: bare-dev android sdk licenses accept
     - run: bare-dev build

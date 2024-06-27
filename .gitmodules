@@ -1,3 +1,4 @@
-[submodule "vendor/bare"]
-	path = vendor/bare
-	url = git@github.com:holepunchto/bare.git
+[submodule "vendor/bare-kit"]
+	path = vendor/bare-kit
+	url = ../../holepunchto/bare-kit.git
+	shallow = true
