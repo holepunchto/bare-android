@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
 
     try {
       ipc.close();
+      ipc = null;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
