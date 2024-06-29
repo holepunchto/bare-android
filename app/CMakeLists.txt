@@ -10,8 +10,9 @@ add_subdirectory(../vendor/bare-kit vendor/bare-kit EXCLUDE_FROM_ALL)
 
 add_bare_bundle(
   bare_android_bundle
-  ENTRY src/main/js/app.js
-  OUT src/main/assets/app.bundle
+  ENTRY app/src/main/js/app.js
+  OUT app/src/main/assets/app.bundle
+  WORKING_DIRECTORY ..
 )
 
 add_library(bare_android SHARED)
