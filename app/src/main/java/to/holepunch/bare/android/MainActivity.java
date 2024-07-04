@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import to.holepunch.bare.kit.IPC;
+import to.holepunch.bare.kit.RPC;
 import to.holepunch.bare.kit.Worklet;
 
 public class MainActivity extends Activity {
@@ -13,6 +14,7 @@ public class MainActivity extends Activity {
 
   Worklet worklet;
   IPC ipc;
+  RPC rpc;
 
   @Override
   public void
@@ -29,8 +31,21 @@ public class MainActivity extends Activity {
 
     ipc = new IPC(worklet);
 
-    ipc.read("UTF-8", (data, exception) -> Log.d("bare", data));
-    ipc.write("Hello from Android", "UTF-8");
+    rpc = new RPC(ipc, (req, error) -> {
+      if (req.command.equals("ping")) {
+        Log.i("bare", req.data("UTF-8"));
+
+        req.reply("Pong from Android", "UTF-8");
+      }
+    });
+
+    RPC.OutgoingRequest req = rpc.request("ping");
+
+    req.send("Ping from Android", "UTF-8");
+
+    req.reply("UTF-8", (data, error) -> {
+      Log.i("bare", data);
+    });
   }
 
   @Override

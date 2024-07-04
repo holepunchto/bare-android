@@ -4,6 +4,8 @@ project(bare_android C)
 
 include(bare)
 
+set(BARE_ANDROID_USE_LOGCAT ON CACHE BOOL "Use Logcat for logging" FORCE)
+
 install_node_modules(WORKING_DIRECTORY ..)
 
 add_subdirectory(../vendor/bare-kit vendor/bare-kit EXCLUDE_FROM_ALL)
