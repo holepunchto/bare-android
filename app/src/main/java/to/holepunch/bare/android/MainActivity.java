@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
     ipc = new IPC(worklet);
 
     rpc = new RPC(ipc, (req, error) -> {
-      if (req.command == "ping") {
+      if (req.command.equals("ping")) {
         Log.i("bare", req.data("UTF-8"));
 
         req.reply("Pong from Android", "UTF-8");
