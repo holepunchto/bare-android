@@ -28,8 +28,8 @@ jobs:
         submodules: recursive
     - uses: actions/cache@v4
       with:
-        path: vendor/bare/corestore
-        key: corestore-${{ matrix.platform }}
+        path: vendor/bare-kit/vendor/bare/corestore
+        key: corestore-${{ matrix.host }}
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
