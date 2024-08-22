@@ -4,7 +4,7 @@ project(bare_android C)
 
 include(bare)
 
-set(BARE_ANDROID_USE_LOGCAT ON CACHE BOOL "Use Logcat for logging" FORCE)
+set(BARE_USE_SYSTEM_LOG ON CACHE BOOL "Use system logging" FORCE)
 
 install_node_modules(WORKING_DIRECTORY ..)
 
