@@ -2,13 +2,6 @@ plugins {
   id 'com.android.application'
 }
 
-def modules
-try {
-  modules = "bare-dev paths cmake".execute()
-} catch (e) {
-  modules = "cmd /c bare-dev paths cmake".execute()
-}
-
 android {
   namespace 'to.holepunch.bare.android'
   compileSdk 34
@@ -24,7 +17,7 @@ android {
     externalNativeBuild {
       cmake {
         targets 'bare_android'
-        arguments "-DCMAKE_MODULE_PATH=" + modules.text, "-DANDROID_STL=none"
+        arguments "-DCMAKE_MODULE_PATH=$System.env.CMAKE_MODULE_PATH", "-DANDROID_STL=none"
       }
     }
   }
