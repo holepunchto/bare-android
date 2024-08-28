@@ -9,7 +9,7 @@ import to.holepunch.bare.kit.Worklet;
 
 public class MainActivity extends Activity {
   static {
-    System.loadLibrary("bare_android");
+    System.loadLibrary("app");
   }
 
   Worklet worklet;

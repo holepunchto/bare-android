@@ -5,7 +5,7 @@ plugins {
 android {
   namespace 'to.holepunch.bare.android'
   compileSdk 34
-  ndkVersion '27.0.11718014'
+  ndkVersion '27.0.12077973'
 
   defaultConfig {
     applicationId 'to.holepunch.bare.android'
@@ -17,9 +17,13 @@ android {
     externalNativeBuild {
       cmake {
         targets 'bare_android'
-        arguments "-DCMAKE_MODULE_PATH=$System.env.CMAKE_MODULE_PATH"
+        arguments "-DCMAKE_MODULE_PATH=" + "bare-dev paths cmake".execute().text, "-DANDROID_STL=none"
       }
     }
+  }
+
+  buildFeatures {
+    prefab true
   }
 
   buildTypes {
@@ -31,7 +35,7 @@ android {
   externalNativeBuild {
     cmake {
       version '3.25.0+'
-      path 'CMakeLists.txt'
+      path '../CMakeLists.txt'
     }
   }
 }
