@@ -7,5 +7,4 @@ node_modules/
 package-lock.json
 local.properties
 *.bundle
-*.bundle.h
-*.d
+*.zip

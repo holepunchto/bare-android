@@ -2,55 +2,28 @@ package to.holepunch.bare.android;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import to.holepunch.bare.kit.IPC;
-import to.holepunch.bare.kit.RPC;
 import to.holepunch.bare.kit.Worklet;
 
 public class MainActivity extends Activity {
-  static {
-    System.loadLibrary("app");
-  }
-
   Worklet worklet;
-  IPC ipc;
-  RPC rpc;
 
   @Override
   public void
-  onCreate (Bundle savedInstanceState) {
+  onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    worklet = new Worklet();
+    worklet = new Worklet(null);
 
     try {
-      worklet.start("/app.bundle", getAssets().open("app.bundle"));
+      worklet.start("/app.bundle", getAssets().open("app.bundle"), null);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
-    ipc = new IPC(worklet);
-
-    rpc = new RPC(ipc, (req, error) -> {
-      if (req.command.equals("ping")) {
-        Log.i("bare", req.data("UTF-8"));
-
-        req.reply("Pong from Android", "UTF-8");
-      }
-    });
-
-    RPC.OutgoingRequest req = rpc.request("ping");
-
-    req.send("Ping from Android", "UTF-8");
-
-    req.reply("UTF-8", (data, error) -> {
-      Log.i("bare", data);
-    });
   }
 
   @Override
   public void
-  onPause () {
+  onPause() {
     super.onPause();
 
     worklet.suspend();
@@ -58,7 +31,7 @@ public class MainActivity extends Activity {
 
   @Override
   public void
-  onResume () {
+  onResume() {
     super.onResume();
 
     worklet.resume();
@@ -66,15 +39,8 @@ public class MainActivity extends Activity {
 
   @Override
   public void
-  onDestroy () {
+  onDestroy() {
     super.onDestroy();
-
-    try {
-      ipc.close();
-      ipc = null;
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
 
     worklet.terminate();
     worklet = null;

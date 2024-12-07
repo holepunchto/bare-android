@@ -1,4 +1,0 @@
-[submodule "vendor/bare-kit"]
-	path = vendor/bare-kit
-	url = ../../holepunchto/bare-kit.git
-	shallow = true

@@ -12,8 +12,4 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = 'Bare'
-
-include ':app'
-
-includeBuild 'vendor/bare-kit'
+include ":app"
