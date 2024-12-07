@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "bare-android",
+  "version": "1.0.0",
   "description": "Example of embedding Bare in an Android application",
   "scripts": {
     "test": "prettier . --check"
