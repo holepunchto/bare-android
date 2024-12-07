@@ -3,7 +3,7 @@
   "name": "bare-android",
   "description": "Example of embedding Bare in an Android application",
   "scripts": {
-    "test": "standard"
+    "test": "prettier . --check"
   },
   "repository": {
     "type": "git",
