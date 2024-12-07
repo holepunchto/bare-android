@@ -16,6 +16,10 @@ Unpack the resulting `prebuilds.zip` archive and move `android/bare-kit` into [`
 gradle build
 ```
 
+### Addons
+
+Native addons will be linked into [`app/src/main/addons/`](app/src/main/addons) as part of the build process and will be automatically included in the final APK bundle by Gradle.
+
 ## License
 
 Apache-2.0
