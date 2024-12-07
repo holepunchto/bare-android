@@ -29,9 +29,10 @@ jobs:
           distribution: temurin
           java-version: 21
       - run: npm install
-      - run: gh release download --repo holepunchto/bare-kit v1.0.0
+      - run: |
+          gh release download --repo holepunchto/bare-kit v1.0.0
+          unzip prebuilds.zip "android/bare-kit/*" -d prebuilds/
+          mv prebuilds/android/bare-kit app/libs/
         env:
           GH_TOKEN: ${{ github.token }}
-      - run: unzip prebuilds.zip "android/bare-kit/*" -d prebuilds/
-      - run: mv prebuilds/android/bare-kit app/libs/
       - run: gradle build
