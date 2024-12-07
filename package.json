@@ -18,7 +18,6 @@
   "devDependencies": {
     "bare-link": "^1.0.4",
     "bare-pack": "^1.1.5",
-    "cmake-bare-bundle": "^2.1.3",
     "prettier": "^3.4.2",
     "prettier-config-standard": "^7.0.0"
   }
