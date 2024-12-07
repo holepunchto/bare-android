@@ -21,10 +21,6 @@ jobs:
     name: ${{ matrix.host }}-${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: android/build/_drive
-          key: corestore-${{ matrix.host }}
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
