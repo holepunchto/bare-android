@@ -11,7 +11,7 @@ android {
   defaultConfig {
     applicationId "to.holepunch.bare.android"
     minSdk 28
-    targetSdk 34
+    targetSdk 35
     versionCode 1
     versionName "1.0"
   }
@@ -32,7 +32,7 @@ android {
   }
 }
 
-task link(type: Exec) {
+tasks.register("link", Exec) {
   workingDir ".."
 
   commandLine([
@@ -46,7 +46,7 @@ task link(type: Exec) {
   ])
 }
 
-task pack(type: Exec) {
+tasks.register("pack", Exec) {
   workingDir ".."
 
   commandLine([
