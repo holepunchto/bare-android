@@ -51,7 +51,10 @@ tasks.register("pack", Exec) {
 
   commandLine([
     "npx", "bare-pack",
-    "--platform", "android",
+    "--target", "android-arm",
+    "--target", "android-arm64",
+    "--target", "android-ia32",
+    "--target", "android-x64",
     "--linked",
     "--out", "app/src/main/assets/app.bundle",
     "app/src/main/js/app.js"
