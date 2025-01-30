@@ -1,10 +1,15 @@
 package to.holepunch.bare.android
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import to.holepunch.bare.kit.Worklet
 
-class MainActivity : Activity() {
+class MainActivity : ComponentActivity() {
   var worklet: Worklet? = null
 
   public override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +21,15 @@ class MainActivity : Activity() {
       worklet!!.start("/app.bundle", assets.open("app.bundle"), null)
     } catch (e: Exception) {
       throw RuntimeException(e)
+    }
+
+    setContent { 
+      Box(
+          modifier = Modifier.fillMaxSize(),
+          contentAlignment = Alignment.Center
+      ) {
+            Text(text = "Hello World")
+        }
     }
   }
 
