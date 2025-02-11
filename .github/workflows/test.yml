@@ -30,7 +30,7 @@ jobs:
           java-version: 21
       - run: npm install
       - run: |
-          gh release download --repo holepunchto/bare-kit v1.1.0
+          gh release download --repo holepunchto/bare-kit v1.2.0
           unzip prebuilds.zip "android/*" -d prebuilds/
           mv prebuilds/android/bare-kit app/libs/
         env:
