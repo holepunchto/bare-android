@@ -36,7 +36,7 @@ tasks.register("link", Exec) {
   workingDir ".."
 
   commandLine([
-    "npx", "bare-link",
+    "node_modules/.bin/bare-link",
     "--target", "android-arm",
     "--target", "android-arm64",
     "--target", "android-ia32",
@@ -50,7 +50,7 @@ tasks.register("pack", Exec) {
   workingDir ".."
 
   commandLine([
-    "npx", "bare-pack",
+    "node_modules/.bin/bare-pack",
     "--target", "android-arm",
     "--target", "android-arm64",
     "--target", "android-ia32",
