@@ -4,16 +4,16 @@ plugins {
 }
 
 android {
-  namespace "to.holepunch.bare.android"
-  compileSdk 34
-  ndkVersion "27.2.12479018"
+  namespace = "to.holepunch.bare.android"
+  compileSdk = 34
+  ndkVersion = "27.2.12479018"
 
   defaultConfig {
-    applicationId "to.holepunch.bare.android"
-    minSdk 28
-    targetSdk 35
-    versionCode 1
-    versionName "1.0"
+    applicationId = "to.holepunch.bare.android"
+    minSdk = 28
+    targetSdk = 35
+    versionCode = 1
+    versionName = "1.0"
   }
 
   compileOptions {
