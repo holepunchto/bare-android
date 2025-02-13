@@ -22,8 +22,6 @@ Native addons will be linked into [`app/src/main/addons/`](app/src/main/addons) 
 
 ## Running
 
-The APK will be located at `./app/build/outputs/apk/<release|debug>`.
-
 > [!IMPORTANT]
 > You may experience problems running the app on an emulated Android device due to https://github.com/holepunchto/libjs/issues/4. If you encounter crashes, try running the app on a real Android device instead.
 
