@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "60152870234",
+    "project_id": "bare-505d3",
+    "storage_bucket": "bare-505d3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60152870234:android:b8d4b16bded6aa1093ef63",
+        "android_client_info": {
+          "package_name": "to.holepunch.bare.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhSaNbIDv8FAzbwG8r_QBV_Te3mqu9f7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
