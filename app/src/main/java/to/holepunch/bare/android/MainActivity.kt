@@ -1,14 +1,22 @@
 package to.holepunch.bare.android
 
-import android.app.Activity
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.core.app.ActivityCompat
 import to.holepunch.bare.kit.Worklet
 
-class MainActivity : Activity() {
+
+class MainActivity : ComponentActivity() {
   var worklet: Worklet? = null
 
   public override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    val hasPermissions = checkNotificationPermissions()
+    if (!hasPermissions) requestNotificationPermissions()
 
     worklet = Worklet(null)
 
@@ -37,4 +45,18 @@ class MainActivity : Activity() {
     worklet!!.terminate()
     worklet = null
   }
+
+  private fun checkNotificationPermissions(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
+
+    private fun requestNotificationPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
+        }
+    }
 }
