@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import to.holepunch.bare.kit.Worklet
 
-
 class MainActivity : Activity() {
   var worklet: Worklet? = null
 
