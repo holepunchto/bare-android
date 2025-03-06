@@ -1,16 +1,17 @@
 plugins {
   id "com.android.application"
   id "org.jetbrains.kotlin.android"
+  id "com.google.gms.google-services"
 }
 
 android {
   namespace = "to.holepunch.bare.android"
-  compileSdk = 34
+  compileSdk = 35
   ndkVersion = "27.2.12479018"
 
   defaultConfig {
     applicationId = "to.holepunch.bare.android"
-    minSdk = 28
+    minSdk = 33
     targetSdk = 35
     versionCode = 1
     versionName = "1.0"
@@ -46,7 +47,7 @@ tasks.register("link", Exec) {
   ])
 }
 
-tasks.register("pack", Exec) {
+tasks.register("packApp", Exec) {
   workingDir ".."
 
   commandLine([
@@ -61,8 +62,29 @@ tasks.register("pack", Exec) {
   ])
 }
 
+tasks.register("packPush", Exec) {
+  workingDir ".."
+
+  commandLine([
+    "node_modules/.bin/bare-pack",
+    "--target", "android-arm",
+    "--target", "android-arm64",
+    "--target", "android-ia32",
+    "--target", "android-x64",
+    "--linked",
+    "--out", "app/src/main/assets/push.bundle",
+    "app/src/main/js/push.js"
+  ])
+}
+
+tasks.register("pack") {
+  dependsOn packApp, packPush
+}
+
 preBuild.dependsOn link, pack
 
 dependencies {
   api fileTree(dir: "libs", include: ["bare-kit/classes.jar"])
+  implementation platform("com.google.firebase:firebase-bom:33.10.0")
+  implementation "com.google.firebase:firebase-messaging"
 }
