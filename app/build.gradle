@@ -47,7 +47,7 @@ tasks.register("link", Exec) {
   ])
 }
 
-tasks.register("pack", Exec) {
+tasks.register("packApp", Exec) {
   workingDir ".."
 
   commandLine([
@@ -60,6 +60,25 @@ tasks.register("pack", Exec) {
     "--out", "app/src/main/assets/app.bundle",
     "app/src/main/js/app.js"
   ])
+}
+
+tasks.register("packPush", Exec) {
+  workingDir ".."
+
+  commandLine([
+    "node_modules/.bin/bare-pack",
+    "--target", "android-arm",
+    "--target", "android-arm64",
+    "--target", "android-ia32",
+    "--target", "android-x64",
+    "--linked",
+    "--out", "app/src/main/assets/push.bundle",
+    "app/src/main/js/push.js"
+  ])
+}
+
+tasks.register("pack") {
+  dependsOn packApp, packPush
 }
 
 preBuild.dependsOn link, pack

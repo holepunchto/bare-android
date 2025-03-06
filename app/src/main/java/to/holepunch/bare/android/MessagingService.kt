@@ -33,7 +33,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     val assetManager = context.assets
 
     try {
-      this.start("app.js", assetManager.open("push.js"), null)
+      this.start("app.bundle", assetManager.open("push.bundle"), null)
       Log.v("CustomMessagingService", "Worklet started!")
     } catch (e: IOException) {
       Log.e("CustomMessagingService", "Failed to start worklet", e)
