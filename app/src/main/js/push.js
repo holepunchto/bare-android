@@ -1,7 +1,7 @@
 console.log('Hello Android notifcations!')
 
-BareKit.on('push', (json, reply) => {
-  console.log('Notification received:', json)
+BareKit.on('push', (payload, reply) => {
+  console.log('Notification received:', JSON.parse(payload))
 
   reply(
     null,
