@@ -4,6 +4,7 @@ import android.app.Activity
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import to.holepunch.bare.kit.Worklet
 
 class MainActivity : Activity() {
@@ -12,8 +13,10 @@ class MainActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
+    Log.v("App", "2")
+
     if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-      requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
+      requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.MANAGE_OWN_CALLS), 0)
     }
 
     worklet = Worklet(null)
