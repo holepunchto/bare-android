@@ -4,7 +4,6 @@ import android.R.drawable
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ComponentName
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -13,12 +12,13 @@ import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import android.util.Log
 import org.json.JSONObject
+import to.holepunch.bare.android.utils.CallManager
 import to.holepunch.bare.kit.Worklet
 import to.holepunch.bare.kit.MessagingService as BaseMessagingService
 
 class MessagingService : BaseMessagingService(Worklet.Options()) {
   private var notificationManager: NotificationManager? = null
-  private var telecomManager: TelecomManager? = null
+  private lateinit var callManager: CallManager
 
   override fun onCreate() {
     Log.v(TAG, "Create messaging service")
@@ -33,7 +33,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
       )
     )
 
-    telecomManager = applicationContext.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+    callManager = CallManager(applicationContext)
 
     try {
       this.start("/push.bundle", assets.open("push.bundle"), null)
@@ -45,9 +45,6 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
   override fun onWorkletReply(reply: JSONObject) {
     Log.v(TAG, "onWorkletReply")
     if (reply.optString("type") == "call") {
-
-
-
       val extras = Bundle().apply {
         putParcelable(
           TelecomManager.EXTRA_INCOMING_CALL_ADDRESS,
@@ -55,8 +52,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
         )
       }
 
-      telecomManager!!.addNewIncomingCall(getPhoneAccountHandle(), extras)
-
+      callManager.addNewIncomingCall(extras)
       return
     }
 
@@ -77,13 +73,6 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
 
   override fun onNewToken(token: String) {
     Log.v("MessagingService", "Token: $token")
-  }
-
-  private fun getPhoneAccountHandle(): PhoneAccountHandle {
-    return PhoneAccountHandle(
-      ComponentName(applicationContext, MyConnectionService::class.java),
-      applicationContext.packageName
-    )
   }
 
   companion object {

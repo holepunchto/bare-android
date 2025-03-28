@@ -3,22 +3,19 @@ package to.holepunch.bare.android
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.telecom.PhoneAccount
-import android.telecom.PhoneAccountHandle
-import android.telecom.TelecomManager
 import android.util.Log
+import to.holepunch.bare.android.utils.PhoneAccountManager
 import to.holepunch.bare.kit.Worklet
 
 class MainActivity : Activity() {
   private var worklet: Worklet? = null
+  private lateinit var phoneAccountManager: PhoneAccountManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -43,6 +40,7 @@ class MainActivity : Activity() {
       Log.v("App", "Permissions requested")
     }
 
+    phoneAccountManager = PhoneAccountManager(applicationContext)
     worklet = Worklet(null)
 
     try {
@@ -54,35 +52,17 @@ class MainActivity : Activity() {
 
   override fun onPause() {
     super.onPause()
-
     worklet!!.suspend()
   }
 
   override fun onResume() {
     super.onResume()
-
     worklet!!.resume()
-
     Log.v("App", "onResume")
-    val tm = applicationContext.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 
-    try {
-      val phoneAccount = PhoneAccount.builder(getPhoneAccountHandle(), "Bare Android")
-        .setCapabilities(PhoneAccount.CAPABILITY_CALL_PROVIDER)
-        .build()
-      tm.registerPhoneAccount(phoneAccount)
-    } catch (e: Exception) {
-      Log.v("App", "Not able to register", e)
-    }
+    phoneAccountManager.registerPhoneAccount()
 
-    val isEnabled = try {
-      tm.getPhoneAccount(getPhoneAccountHandle())?.isEnabled == true
-    } catch (e: SecurityException) {
-      Log.w("VoIP", "Missing READ_PHONE_NUMBERS permission", e)
-      false
-    }
-
-    if (!isEnabled) {
+    if (!phoneAccountManager.isPhoneAccountEnabled()) {
       Handler(Looper.getMainLooper()).post {
         if (!isFinishing && !isDestroyed) {
           promptToEnablePhoneAccount(this)
@@ -93,7 +73,6 @@ class MainActivity : Activity() {
 
   override fun onDestroy() {
     super.onDestroy()
-
     worklet!!.terminate()
     worklet = null
   }
@@ -105,11 +84,7 @@ class MainActivity : Activity() {
 
     builder.setPositiveButton("Yes") { dialog, _ ->
       dialog.dismiss()
-      val intent = Intent()
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-      intent.setComponent(ComponentName("com.android.server.telecom",
-        "com.android.server.telecom.settings.EnableAccountPreferenceActivity"))
-      context.startActivity(intent)
+      startActivity(phoneAccountManager.getEnablePhoneAccountIntent())
     }
 
     builder.setNegativeButton("No") { dialog, _ ->
@@ -117,12 +92,5 @@ class MainActivity : Activity() {
     }
 
     builder.show()
-  }
-
-  private fun getPhoneAccountHandle(): PhoneAccountHandle {
-    return PhoneAccountHandle(
-      ComponentName(applicationContext, MyConnectionService::class.java),
-      applicationContext.packageName
-    )
   }
 }
