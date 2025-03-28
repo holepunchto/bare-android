@@ -18,13 +18,13 @@ import to.holepunch.bare.kit.MessagingService as BaseMessagingService
 
 class MessagingService : BaseMessagingService(Worklet.Options()) {
   private var notificationManager: NotificationManager? = null
+  private var telecomManager: TelecomManager? = null
 
   override fun onCreate() {
-    Log.v("MessagingService", "Create messaging service")
+    Log.v(TAG, "Create messaging service")
     super.onCreate()
 
     notificationManager = getSystemService(NotificationManager::class.java)
-
     notificationManager!!.createNotificationChannel(
       NotificationChannel(
         CHANNEL_ID,
@@ -32,6 +32,8 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
         NotificationManager.IMPORTANCE_DEFAULT
       )
     )
+
+    telecomManager = applicationContext.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 
     try {
       this.start("/push.bundle", assets.open("push.bundle"), null)
@@ -41,19 +43,10 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
   }
 
   override fun onWorkletReply(reply: JSONObject) {
-    Log.v("MessagingService", "onWorkletReply")
+    Log.v(TAG, "onWorkletReply")
     if (reply.optString("type") == "call") {
-      val telecomManager = applicationContext.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
-      val handle = PhoneAccountHandle(
-        ComponentName(applicationContext, MyConnectionService::class.java),
-        "voip_account" // ??????
-      )
 
-      val phoneAccount = PhoneAccount.builder(handle, "My app calls")
-        .setCapabilities(PhoneAccount.CAPABILITY_CALL_PROVIDER)
-        .build()
 
-      telecomManager.registerPhoneAccount(phoneAccount)
 
       val extras = Bundle().apply {
         putParcelable(
@@ -62,7 +55,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
         )
       }
 
-      telecomManager.addNewIncomingCall(handle, extras)
+      telecomManager!!.addNewIncomingCall(getPhoneAccountHandle(), extras)
 
       return
     }
@@ -86,7 +79,15 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     Log.v("MessagingService", "Token: $token")
   }
 
+  private fun getPhoneAccountHandle(): PhoneAccountHandle {
+    return PhoneAccountHandle(
+      ComponentName(applicationContext, MyConnectionService::class.java),
+      applicationContext.packageName
+    )
+  }
+
   companion object {
     private const val CHANNEL_ID = "custom_channel_id"
+    private const val TAG = "MessagingService"
   }
 }
