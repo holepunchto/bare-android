@@ -20,8 +20,6 @@ class MainActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    Log.v("App", "14")
-
     val permission = mutableListOf<String>()
 
     if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
@@ -62,13 +60,13 @@ class MainActivity : Activity() {
 
     phoneAccountManager.registerPhoneAccount()
 
-    if (!phoneAccountManager.isPhoneAccountEnabled()) {
-      Handler(Looper.getMainLooper()).post {
-        if (!isFinishing && !isDestroyed) {
-          promptToEnablePhoneAccount(this)
-        }
-      }
-    }
+//    if (!phoneAccountManager.isPhoneAccountEnabled()) {
+//      Handler(Looper.getMainLooper()).post {
+//        if (!isFinishing && !isDestroyed) {
+//          promptToEnablePhoneAccount(this)
+//        }
+//      }
+//    }
   }
 
   override fun onDestroy() {

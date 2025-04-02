@@ -24,7 +24,7 @@ class PhoneAccountManager(private val context: Context) {
     fun registerPhoneAccount() {
         try {
             val phoneAccount = PhoneAccount.builder(getPhoneAccountHandle(), "Bare Android")
-                .setCapabilities(PhoneAccount.CAPABILITY_CALL_PROVIDER)
+                .setCapabilities(PhoneAccount.CAPABILITY_SELF_MANAGED)
                 .build()
             telecomManager.registerPhoneAccount(phoneAccount)
         } catch (e: Exception) {
