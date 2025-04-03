@@ -4,14 +4,12 @@ import android.R.drawable
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.telecom.PhoneAccount
-import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import android.util.Log
 import org.json.JSONObject
+
 import to.holepunch.bare.android.utils.CallManager
 import to.holepunch.bare.kit.Worklet
 import to.holepunch.bare.kit.MessagingService as BaseMessagingService
@@ -25,6 +23,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     super.onCreate()
 
     notificationManager = getSystemService(NotificationManager::class.java)
+    // TODO: use the same we have in MyConnectionService
     notificationManager!!.createNotificationChannel(
       NotificationChannel(
         CHANNEL_ID,

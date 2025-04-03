@@ -23,5 +23,8 @@
         <action android:name="android.telecom.ConnectionService" />
       </intent-filter>
     </service>
+    <receiver
+    android:name=".CallActionReceiver"
+    android:exported="true"/>
   </application>
 </manifest>

@@ -2,7 +2,6 @@ package to.holepunch.bare.android.utils
 
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
@@ -29,25 +28,6 @@ class PhoneAccountManager(private val context: Context) {
             telecomManager.registerPhoneAccount(phoneAccount)
         } catch (e: Exception) {
             Log.v("PhoneAccountManager", "Not able to register", e)
-        }
-    }
-
-    fun isPhoneAccountEnabled(): Boolean {
-        return try {
-            telecomManager.getPhoneAccount(getPhoneAccountHandle())?.isEnabled == true
-        } catch (e: SecurityException) {
-            Log.w("PhoneAccountManager", "Missing READ_PHONE_NUMBERS permission", e)
-            false
-        }
-    }
-
-    fun getEnablePhoneAccountIntent(): Intent {
-        return Intent().apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-            component = ComponentName(
-                "com.android.server.telecom",
-                "com.android.server.telecom.settings.EnableAccountPreferenceActivity"
-            )
         }
     }
 }
