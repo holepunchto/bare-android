@@ -50,17 +50,13 @@ class MyConnection(private val ctx: Context, private val recipientName: String, 
 
 class CallActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Log.v("CallActionReceive", "in onReceive")
         val connectionId = intent.getStringExtra("CONNECTION_ID") ?: return
-        Log.v("CallActionReceive", "get connection id")
 
         when (intent.action) {
             "ANSWER_CALL" -> {
-                Log.v("CallActionReceive", "ANSWER_CALL")
                 MyConnectionService.startCall(connectionId)
             }
             "DECLINE_CALL" -> {
-                Log.v("CallActionReceive", "DECLINE_CALL")
                 MyConnectionService.declineCall(connectionId)
             }
         }
@@ -75,11 +71,6 @@ class MyConnectionService: ConnectionService() {
             val con = this.getConnection(id)
             Log.v(TAG, "found connection for id ${con?.id}")
             con?.setActive()
-
-            // Later
-            con?.setDisconnected(DisconnectCause(DisconnectCause.CANCELED))
-            con?.destroy()
-            this.removeConnection(id)
         }
 
         fun declineCall(id: String) {
@@ -105,9 +96,9 @@ class MyConnectionService: ConnectionService() {
         connectionManagerPhoneAccount: PhoneAccountHandle?,
         request: ConnectionRequest?
     ): Connection {
-        Log.v(TAG, "In on createIncomingConnection")
-        val connectionId = "some_unique_id" // Use the phone number or a UUID
-        val conn = MyConnection(applicationContext, "tony", connectionId)
+        val connectionId = request?.extras?.getString("CONNECTION_ID") ?: "default_connection_id"
+        val callerName = request?.extras?.getString("CALLER_NAME") ?: "Unknown"
+        val conn = MyConnection(applicationContext, callerName, connectionId)
 
         conn.setAddress(request?.address, TelecomManager.PRESENTATION_ALLOWED)
         conn.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED)

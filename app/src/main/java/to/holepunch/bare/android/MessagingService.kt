@@ -33,10 +33,8 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     Log.v(TAG, "onWorkletReply")
     if (reply.optString("type") == "call") {
       val extras = Bundle().apply {
-        putParcelable(
-          TelecomManager.EXTRA_INCOMING_CALL_ADDRESS,
-          Uri.fromParts("user", reply.optString("caller", "unknown caller"), null)
-        )
+        putString("CONNECTION_ID", reply.optString("id", "0000000"))
+        putString("CALLER_NAME", reply.optString("caller", "unknown"))
       }
 
       callManager.addNewIncomingCall(extras)

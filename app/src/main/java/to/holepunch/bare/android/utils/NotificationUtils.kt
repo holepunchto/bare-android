@@ -1,6 +1,5 @@
 package to.holepunch.bare.android.utils
 
-import android.R
 import android.app.Activity
 import android.app.Notification
 import android.app.PendingIntent
@@ -68,7 +67,7 @@ class NotificationUtils {
 
         fun getPushNotification(ctx: Context, title: String, body: String): Notification {
             return Notification.Builder(ctx, NotificationManagerUtils.PUSH_NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.drawable.ic_dialog_info)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)

@@ -1,15 +1,33 @@
-console.log('Hello Android notifcations (call)!')
+console.log('Hello Android notifications (call)!')
 
 BareKit.on('push', (payload, reply) => {
-  console.log('Notification received:', JSON.parse(payload))
+  const { data } = JSON.parse(payload)
+  console.log('Notification received:', data)
 
-  reply(
-    null,
-    JSON.stringify({
-      type: 'call',
-      title: 'Notification received',
-      body: 'This is the body',
-      caller: 'tony'
-    })
-  )
+  switch (data.type) {
+    // Push notification
+    case 'notification':
+      return reply(
+        null,
+        JSON.stringify({
+          type: 'notification',
+          title: data.title,
+          body: data.body
+        })
+      )
+
+    // VoIP notification
+    case 'call':
+      return reply(
+        null,
+        JSON.stringify({
+          type: 'call',
+          caller: data.caller,
+          id: data.id
+        })
+      )
+
+    default:
+      return reply(null, null)
+  }
 })
