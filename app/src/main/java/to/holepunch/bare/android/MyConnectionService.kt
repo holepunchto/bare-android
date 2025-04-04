@@ -9,7 +9,6 @@ import android.telecom.ConnectionRequest
 import android.telecom.ConnectionService
 import android.telecom.DisconnectCause
 import android.telecom.PhoneAccountHandle
-import android.telecom.TelecomManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 
@@ -19,7 +18,6 @@ import to.holepunch.bare.android.utils.NotificationUtils
 class MyConnection(private val ctx: Context, private val recipientName: String, val id: String) : Connection() {
     companion object {
         private const val TAG = "MyConnection"
-        private const val YOUR_CHANNEL_ID = "custom_channel_id"
     }
 
     // These will be raised if the user answers your call via a Bluetooth device or another device
@@ -42,22 +40,22 @@ class MyConnection(private val ctx: Context, private val recipientName: String, 
 
         NotificationManagerUtils.createIncomingCallChannel(ctx)
 
-        val notificationManager = NotificationManagerUtils.getManager(ctx)
         val notification = NotificationUtils.getIncomingCallNotification(ctx, recipientName, id)
-        notificationManager.notify(YOUR_CHANNEL_ID, 1, notification)
+        NotificationManagerUtils.notifyIncomingCallChannel(ctx,  notification, 10)
     }
 }
 
 class CallActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val connectionId = intent.getStringExtra("CONNECTION_ID") ?: return
+        Log.v("CallActionReceiver", "connection id $connectionId")
 
         when (intent.action) {
             "ANSWER_CALL" -> {
                 MyConnectionService.startCall(connectionId)
             }
             "DECLINE_CALL" -> {
-                MyConnectionService.declineCall(connectionId)
+                MyConnectionService.declineCall(context, connectionId)
             }
         }
     }
@@ -68,25 +66,18 @@ class MyConnectionService: ConnectionService() {
         val activeConnections: MutableMap<String, MyConnection> = mutableMapOf()
 
         fun startCall(id: String) {
-            val con = this.getConnection(id)
+            val con = activeConnections[id]
             Log.v(TAG, "found connection for id ${con?.id}")
             con?.setActive()
         }
 
-        fun declineCall(id: String) {
-            val con = this.getConnection(id)
+        fun declineCall(ctx: Context, id: String) {
+            val con = activeConnections[id]
             Log.v(TAG, "found connection for id ${con?.id}")
             con?.setDisconnected(DisconnectCause(DisconnectCause.REJECTED))
             con?.destroy()
-            this.removeConnection(id)
-        }
-
-        private fun getConnection(connectionId: String): MyConnection? {
-            return activeConnections[connectionId]
-        }
-
-        private fun removeConnection(connectionId: String) {
-            activeConnections.remove(connectionId)
+            activeConnections.remove(id)
+            NotificationManagerUtils.cancelIncomingCallChannel(ctx, 10)
         }
 
         private const val TAG = "MyConnectionService"
@@ -96,8 +87,10 @@ class MyConnectionService: ConnectionService() {
         connectionManagerPhoneAccount: PhoneAccountHandle?,
         request: ConnectionRequest?
     ): Connection {
-        val connectionId = request?.extras?.getString("CONNECTION_ID") ?: "default_connection_id"
+        val connectionId = request?.extras?.getString("CONNECTION_ID") ?: "some_id"
         val callerName = request?.extras?.getString("CALLER_NAME") ?: "Unknown"
+        Log.v("ConnectionService", "connection id: $connectionId")
+        Log.v("ConnectionService", "callerName: $callerName")
         val conn = MyConnection(applicationContext, callerName, connectionId)
 
         conn.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED)

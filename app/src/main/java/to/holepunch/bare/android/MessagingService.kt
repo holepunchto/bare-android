@@ -33,6 +33,10 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     Log.v(TAG, "onWorkletReply")
     if (reply.optString("type") == "call") {
       val extras = Bundle().apply {
+        putParcelable(
+          TelecomManager.EXTRA_INCOMING_CALL_ADDRESS,
+          Uri.fromParts("user", reply.optString("caller", "unknown"), null)
+        )
         putString("CONNECTION_ID", reply.optString("id", "0000000"))
         putString("CALLER_NAME", reply.optString("caller", "unknown"))
       }
@@ -43,10 +47,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
 
     try {
       val notification = NotificationUtils.getPushNotification(applicationContext, reply.optString("title", "Default title"), reply.optString("body", "Default description"))
-      NotificationManagerUtils.getManager(applicationContext).notify(
-        1,
-        notification
-      )
+      NotificationManagerUtils.notifyPushNotificationChannel(applicationContext, notification, 1)
     } catch (e: Exception) {
       throw RuntimeException(e)
     }

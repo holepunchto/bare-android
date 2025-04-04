@@ -1,5 +1,6 @@
 package to.holepunch.bare.android.utils
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -18,6 +19,21 @@ class NotificationManagerUtils {
             notificationManager.createNotificationChannel(channel)
         }
 
+        fun notifyIncomingCallChannel(ctx: Context, notification: Notification, id: Int) {
+            val notificationManager: NotificationManager = getManager(ctx);
+            notificationManager.notify(INCOMING_CALL_CHANNEL, id, notification)
+        }
+
+        fun cancelIncomingCallChannel(ctx: Context, id: Int) {
+            val notificationManager: NotificationManager = getManager(ctx);
+            notificationManager.cancel(id)
+        }
+
+        fun notifyPushNotificationChannel(ctx: Context, notification: Notification, id: Int) {
+            val notificationManager: NotificationManager = getManager(ctx);
+            notificationManager.notify(PUSH_NOTIFICATION_CHANNEL, id, notification)
+        }
+
         fun createPushNotificationChannel(ctx: Context) {
             val notificationManager: NotificationManager = getManager(ctx);
             val channel = NotificationChannel(
@@ -28,7 +44,7 @@ class NotificationManagerUtils {
             notificationManager.createNotificationChannel(channel)
         }
 
-        fun getManager(ctx: Context): NotificationManager {
+        private fun getManager(ctx: Context): NotificationManager {
             return ctx.getSystemService(
             NotificationManager::class.java
             )
