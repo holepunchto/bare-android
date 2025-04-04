@@ -1,9 +1,5 @@
 package to.holepunch.bare.android
 
-import android.R.drawable
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.net.Uri
 import android.os.Bundle
 import android.telecom.TelecomManager
@@ -11,27 +7,19 @@ import android.util.Log
 import org.json.JSONObject
 
 import to.holepunch.bare.android.utils.CallManager
+import to.holepunch.bare.android.utils.NotificationManagerUtils
+import to.holepunch.bare.android.utils.NotificationUtils
 import to.holepunch.bare.kit.Worklet
 import to.holepunch.bare.kit.MessagingService as BaseMessagingService
 
 class MessagingService : BaseMessagingService(Worklet.Options()) {
-  private var notificationManager: NotificationManager? = null
   private lateinit var callManager: CallManager
 
   override fun onCreate() {
     Log.v(TAG, "Create messaging service")
     super.onCreate()
 
-    notificationManager = getSystemService(NotificationManager::class.java)
-    // TODO: use the same we have in MyConnectionService
-    notificationManager!!.createNotificationChannel(
-      NotificationChannel(
-        CHANNEL_ID,
-        "Notifications",
-        NotificationManager.IMPORTANCE_DEFAULT
-      )
-    )
-
+    NotificationManagerUtils.createPushNotificationChannel(applicationContext)
     callManager = CallManager(applicationContext)
 
     try {
@@ -56,14 +44,10 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     }
 
     try {
-      notificationManager!!.notify(
+      val notification = NotificationUtils.getPushNotification(applicationContext, reply.optString("title", "Default title"), reply.optString("body", "Default description"))
+      NotificationManagerUtils.getManager(applicationContext).notify(
         1,
-        Notification.Builder(this, CHANNEL_ID)
-          .setSmallIcon(drawable.ic_dialog_info)
-          .setContentTitle(reply.optString("title", "Default title"))
-          .setContentText(reply.optString("body", "Default description"))
-          .setAutoCancel(true)
-          .build()
+        notification
       )
     } catch (e: Exception) {
       throw RuntimeException(e)
@@ -75,7 +59,6 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
   }
 
   companion object {
-    private const val CHANNEL_ID = "custom_channel_id"
     private const val TAG = "MessagingService"
   }
 }

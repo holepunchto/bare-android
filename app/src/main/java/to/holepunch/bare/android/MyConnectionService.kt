@@ -1,12 +1,9 @@
 package to.holepunch.bare.android
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.telecom.Connection
 import android.telecom.ConnectionRequest
 import android.telecom.ConnectionService
@@ -14,9 +11,12 @@ import android.telecom.DisconnectCause
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import android.util.Log
-import androidx.core.app.NotificationCompat
+import androidx.annotation.RequiresApi
 
-class MyConnection(private val ctx: Context, private val recipientName: String, public val id: String) : Connection() {
+import to.holepunch.bare.android.utils.NotificationManagerUtils
+import to.holepunch.bare.android.utils.NotificationUtils
+
+class MyConnection(private val ctx: Context, private val recipientName: String, val id: String) : Connection() {
     companion object {
         private const val TAG = "MyConnection"
         private const val YOUR_CHANNEL_ID = "custom_channel_id"
@@ -36,47 +36,15 @@ class MyConnection(private val ctx: Context, private val recipientName: String, 
         Log.v(TAG, "onReject")
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onShowIncomingCallUi() {
         super.onShowIncomingCallUi()
-        Log.v(TAG, "onShowIncomingCallUi")
 
-        val notificationManager: NotificationManager = ctx.getSystemService(
-            NotificationManager::class.java
-        )
-        val channel = NotificationChannel(
-            YOUR_CHANNEL_ID, "Incoming Calls",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(channel)
+        NotificationManagerUtils.createIncomingCallChannel(ctx)
 
-        val answerIntent = Intent(ctx, CallActionReceiver::class.java).apply {
-            action = "ANSWER_CALL"
-            putExtra("CONNECTION_ID", id)
-        }
-        val answerPendingIntent = PendingIntent.getBroadcast(ctx, 0, answerIntent, PendingIntent.FLAG_IMMUTABLE)
-
-        val declineIntent = Intent(ctx, CallActionReceiver::class.java).apply {
-            action = "DECLINE_CALL"
-            putExtra("CONNECTION_ID", id)
-        }
-        val declinePendingIntent = PendingIntent.getBroadcast(ctx, 1, declineIntent, PendingIntent.FLAG_IMMUTABLE)
-
-        val notification = NotificationCompat.Builder(ctx, YOUR_CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.sym_call_incoming)
-            .setContentTitle("Incoming call from $recipientName")
-            .setContentText("Voice Call")
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setCategory(NotificationCompat.CATEGORY_CALL)
-            .setAutoCancel(true)
-            .setOngoing(true)
-            .addAction(android.R.drawable.ic_menu_call, "Answer", answerPendingIntent)
-            .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Decline", declinePendingIntent)
-            .build()
-
-        notification.flags = notification.flags or Notification.FLAG_INSISTENT
+        val notificationManager = NotificationManagerUtils.getManager(ctx)
+        val notification = NotificationUtils.getIncomingCallNotification(ctx, recipientName, id)
         notificationManager.notify(YOUR_CHANNEL_ID, 1, notification)
-
-        Log.v(TAG, "onShowIncomingCallUi end")
     }
 }
 
