@@ -100,9 +100,7 @@ class MyConnectionService: ConnectionService() {
         val callerName = request?.extras?.getString("CALLER_NAME") ?: "Unknown"
         val conn = MyConnection(applicationContext, callerName, connectionId)
 
-        conn.setAddress(request?.address, TelecomManager.PRESENTATION_ALLOWED)
         conn.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED)
-        conn.setCallerDisplayName("bare dev", TelecomManager.PRESENTATION_ALLOWED)
         conn.setAudioModeIsVoip(true)
 
         activeConnections[connectionId] = conn
