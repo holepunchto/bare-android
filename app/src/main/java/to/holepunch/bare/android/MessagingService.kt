@@ -3,9 +3,6 @@ package to.holepunch.bare.android
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.net.Uri
-import android.os.Bundle
-import android.telecom.TelecomManager
 import android.util.Log
 import org.json.JSONObject
 import to.holepunch.bare.android.voip.VoIPManager
@@ -41,16 +38,11 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
 
   override fun onWorkletReply(reply: JSONObject) {
     if (reply.optString("type") == "call") {
-      val extras = Bundle().apply {
-        putParcelable(
-          TelecomManager.EXTRA_INCOMING_CALL_ADDRESS,
-          Uri.fromParts("user", reply.optString("caller", "unknown"), null)
-        )
-        putString("CONNECTION_ID", reply.optString("id", "0000000"))
-        putString("CALLER_NAME", reply.optString("caller", "unknown"))
-      }
+      voipManager.addNewIncomingCall(
+        reply.optString("id", "1234567"),
+        reply.optString("caller", "Unknown")
+      )
 
-      voipManager.addNewIncomingCall(extras)
       return
     }
 

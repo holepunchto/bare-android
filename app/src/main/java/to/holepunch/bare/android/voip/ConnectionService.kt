@@ -10,7 +10,7 @@ import android.telecom.ConnectionService as BaseConnectionService
 
 class ConnectionService : BaseConnectionService() {
   override fun onCreateIncomingConnection(
-    connectionManagerPhoneAccount: PhoneAccountHandle?,
+    handle: PhoneAccountHandle?,
     request: ConnectionRequest?
   ): Connection {
     val id = request?.extras?.getString("CONNECTION_ID")!!

@@ -2,6 +2,8 @@ package to.holepunch.bare.android.voip
 
 import android.content.ComponentName
 import android.content.Context
+import android.net.Uri
+import android.os.Bundle
 import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
@@ -18,7 +20,16 @@ class VoIPManager(private val context: Context) {
     )
   }
 
-  fun addNewIncomingCall(extras: android.os.Bundle) {
+  fun addNewIncomingCall(id: String, caller: String) {
+    val extras = Bundle().apply {
+      putParcelable(
+        TelecomManager.EXTRA_INCOMING_CALL_ADDRESS,
+        Uri.fromParts("user", caller, null)
+      )
+      putString("CONNECTION_ID", id)
+      putString("CALLER_NAME", caller)
+    }
+
     telecomManager.addNewIncomingCall(getPhoneAccountHandle(), extras)
   }
 
