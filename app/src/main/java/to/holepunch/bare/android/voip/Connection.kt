@@ -12,8 +12,8 @@ import android.telecom.Connection as BaseConnection
 
 class Connection(
   private val context: Context,
-  private val recipient: String,
-  private val id: String
+  private val id: String,
+  private val caller: String
 ) : BaseConnection() {
   private val notificationManager: NotificationManager by lazy {
     context.getSystemService(NotificationManager::class.java)
@@ -66,8 +66,8 @@ class Connection(
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
-    val caller = Person.Builder()
-      .setName(recipient)
+    val person = Person.Builder()
+      .setName(caller)
       .setImportant(true)
       .build()
 
@@ -78,12 +78,12 @@ class Connection(
         .setSmallIcon(android.R.drawable.sym_call_incoming)
         .setStyle(
           Notification.CallStyle.forIncomingCall(
-            caller,
+            person,
             declinePendingIntent,
             answerPendingIntent
           )
         )
-        .addPerson(caller)
+        .addPerson(person)
         .build()
     )
   }

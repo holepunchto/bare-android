@@ -16,7 +16,7 @@ class ConnectionService : BaseConnectionService() {
     val id = request?.extras?.getString("CONNECTION_ID")!!
     val caller = request.extras?.getString("CALLER_NAME")!!
 
-    val conn = Connection(applicationContext, caller, id)
+    val conn = Connection(this, id, caller)
 
     conn.setConnectionProperties(BaseConnection.PROPERTY_SELF_MANAGED)
     conn.setAudioModeIsVoip(true)
