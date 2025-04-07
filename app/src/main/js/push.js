@@ -1,7 +1,8 @@
-console.log('Hello Android notifications (call)!')
+console.log('Hello Android notifications!')
 
 BareKit.on('push', (payload, reply) => {
   const { data } = JSON.parse(payload)
+
   console.log('Notification received:', data)
 
   switch (data.type) {
@@ -22,8 +23,8 @@ BareKit.on('push', (payload, reply) => {
         null,
         JSON.stringify({
           type: 'call',
-          caller: data.caller,
-          id: data.id
+          id: data.id,
+          caller: data.caller
         })
       )
 
