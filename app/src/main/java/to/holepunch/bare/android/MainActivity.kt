@@ -9,7 +9,7 @@ import to.holepunch.bare.kit.Worklet
 
 class MainActivity : Activity() {
   private val phoneAccountManager: PhoneAccountManager by lazy {
-    PhoneAccountManager(applicationContext)
+    PhoneAccountManager(this)
   }
 
   private lateinit var worklet: Worklet

@@ -72,7 +72,6 @@ class Connection(
       .build()
 
     notificationManager.notify(
-      INCOMING_CALL_CHANNEL,
       10,
       Notification.Builder(context, INCOMING_CALL_CHANNEL)
         .setFullScreenIntent(fullScreenPendingIntent, true)

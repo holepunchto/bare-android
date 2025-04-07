@@ -18,7 +18,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
   }
 
   private val callManager: CallManager by lazy {
-    CallManager(applicationContext)
+    CallManager(this)
   }
 
   override fun onCreate() {
@@ -56,9 +56,8 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
 
     try {
       notificationManager.notify(
-        PUSH_NOTIFICATION_CHANNEL,
         1,
-        Notification.Builder(applicationContext, PUSH_NOTIFICATION_CHANNEL)
+        Notification.Builder(this, PUSH_NOTIFICATION_CHANNEL)
           .setSmallIcon(android.R.drawable.ic_dialog_info)
           .setContentTitle(reply.optString("title", "Default title"))
           .setContentText(reply.optString("body", "Default description"))
