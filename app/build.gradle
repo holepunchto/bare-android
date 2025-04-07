@@ -38,10 +38,7 @@ tasks.register("link", Exec) {
 
   commandLine([
     "node_modules/.bin/bare-link",
-    "--target", "android-arm",
-    "--target", "android-arm64",
-    "--target", "android-ia32",
-    "--target", "android-x64",
+    "--preset", "android",
     "--needs", "libbare-kit.so",
     "--out", "app/src/main/addons"
   ])
@@ -52,11 +49,7 @@ tasks.register("packApp", Exec) {
 
   commandLine([
     "node_modules/.bin/bare-pack",
-    "--target", "android-arm",
-    "--target", "android-arm64",
-    "--target", "android-ia32",
-    "--target", "android-x64",
-    "--linked",
+    "--preset", "android",
     "--out", "app/src/main/assets/app.bundle",
     "app/src/main/js/app.js"
   ])
@@ -67,11 +60,7 @@ tasks.register("packPush", Exec) {
 
   commandLine([
     "node_modules/.bin/bare-pack",
-    "--target", "android-arm",
-    "--target", "android-arm64",
-    "--target", "android-ia32",
-    "--target", "android-x64",
-    "--linked",
+    "--preset", "android",
     "--out", "app/src/main/assets/push.bundle",
     "app/src/main/js/push.js"
   ])
