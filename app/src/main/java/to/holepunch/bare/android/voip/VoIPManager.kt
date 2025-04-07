@@ -6,7 +6,7 @@ import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 
-class PhoneAccountManager(private val context: Context) {
+class VoIPManager(private val context: Context) {
   private val telecomManager: TelecomManager by lazy {
     context.getSystemService(TelecomManager::class.java)
   }
@@ -18,10 +18,14 @@ class PhoneAccountManager(private val context: Context) {
     )
   }
 
-  fun registerPhoneAccount() {
+  fun addNewIncomingCall(extras: android.os.Bundle) {
+    telecomManager.addNewIncomingCall(getPhoneAccountHandle(), extras)
+  }
+
+  fun registerPhoneAccount(label: String) {
     try {
       val phoneAccount = PhoneAccount
-        .builder(getPhoneAccountHandle(), "Bare Android")
+        .builder(getPhoneAccountHandle(), label)
         .setCapabilities(PhoneAccount.CAPABILITY_SELF_MANAGED)
         .build()
 

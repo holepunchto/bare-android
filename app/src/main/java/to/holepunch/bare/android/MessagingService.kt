@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.telecom.TelecomManager
 import android.util.Log
 import org.json.JSONObject
-import to.holepunch.bare.android.voip.CallManager
+import to.holepunch.bare.android.voip.VoIPManager
 import to.holepunch.bare.kit.Worklet
 import to.holepunch.bare.kit.MessagingService as BaseMessagingService
 
@@ -17,8 +17,8 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     getSystemService(NotificationManager::class.java)
   }
 
-  private val callManager: CallManager by lazy {
-    CallManager(this)
+  private val voipManager: VoIPManager by lazy {
+    VoIPManager(this)
   }
 
   override fun onCreate() {
@@ -50,7 +50,7 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
         putString("CALLER_NAME", reply.optString("caller", "unknown"))
       }
 
-      callManager.addNewIncomingCall(extras)
+      voipManager.addNewIncomingCall(extras)
       return
     }
 

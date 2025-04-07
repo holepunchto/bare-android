@@ -4,12 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
-import to.holepunch.bare.android.voip.PhoneAccountManager
+import to.holepunch.bare.android.voip.VoIPManager
 import to.holepunch.bare.kit.Worklet
 
 class MainActivity : Activity() {
-  private val phoneAccountManager: PhoneAccountManager by lazy {
-    PhoneAccountManager(this)
+  private val voipManager: VoIPManager by lazy {
+    VoIPManager(this)
   }
 
   private lateinit var worklet: Worklet
@@ -41,7 +41,7 @@ class MainActivity : Activity() {
 
     worklet.resume()
 
-    phoneAccountManager.registerPhoneAccount()
+    voipManager.registerPhoneAccount("Bare Android")
   }
 
   override fun onDestroy() {
