@@ -37,27 +37,29 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
   }
 
   override fun onWorkletReply(reply: JSONObject) {
-    if (reply.optString("type") == "call") {
-      voipManager.addNewIncomingCall(
-        reply.optString("id", "1234567"),
-        reply.optString("caller", "Unknown")
-      )
+    when (reply.optString("type")) {
+      "call" -> {
+        voipManager.addNewIncomingCall(
+          reply.optString("id", "1234567"),
+          reply.optString("caller", "Unknown")
+        )
+      }
 
-      return
-    }
-
-    try {
-      notificationManager.notify(
-        1,
-        Notification.Builder(this, PUSH_NOTIFICATION_CHANNEL)
-          .setSmallIcon(android.R.drawable.ic_dialog_info)
-          .setContentTitle(reply.optString("title", "Default title"))
-          .setContentText(reply.optString("body", "Default description"))
-          .setAutoCancel(true)
-          .build()
-      )
-    } catch (e: Exception) {
-      throw RuntimeException(e)
+      "notification" -> {
+        try {
+          notificationManager.notify(
+            1,
+            Notification.Builder(this, PUSH_NOTIFICATION_CHANNEL)
+              .setSmallIcon(android.R.drawable.ic_dialog_info)
+              .setContentTitle(reply.optString("title", "Default title"))
+              .setContentText(reply.optString("body", "Default description"))
+              .setAutoCancel(true)
+              .build()
+          )
+        } catch (e: Exception) {
+          throw RuntimeException(e)
+        }
+      }
     }
   }
 
