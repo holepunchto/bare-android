@@ -1,26 +1,36 @@
 package to.holepunch.bare.android
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.net.Uri
 import android.os.Bundle
 import android.telecom.TelecomManager
 import android.util.Log
 import org.json.JSONObject
-
-import to.holepunch.bare.android.utils.CallManager
-import to.holepunch.bare.android.utils.NotificationManagerUtils
-import to.holepunch.bare.android.utils.NotificationUtils
+import to.holepunch.bare.android.voip.CallManager
 import to.holepunch.bare.kit.Worklet
 import to.holepunch.bare.kit.MessagingService as BaseMessagingService
 
 class MessagingService : BaseMessagingService(Worklet.Options()) {
-  private lateinit var callManager: CallManager
+  private val notificationManager: NotificationManager by lazy {
+    getSystemService(NotificationManager::class.java)
+  }
+
+  private val callManager: CallManager by lazy {
+    CallManager(applicationContext)
+  }
 
   override fun onCreate() {
-    Log.v(TAG, "Create messaging service")
     super.onCreate()
 
-    NotificationManagerUtils.createPushNotificationChannel(applicationContext)
-    callManager = CallManager(applicationContext)
+    notificationManager.createNotificationChannel(
+      NotificationChannel(
+        PUSH_NOTIFICATION_CHANNEL,
+        "Notifications",
+        NotificationManager.IMPORTANCE_DEFAULT
+      )
+    )
 
     try {
       this.start("/push.bundle", assets.open("push.bundle"), null)
@@ -30,7 +40,6 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
   }
 
   override fun onWorkletReply(reply: JSONObject) {
-    Log.v(TAG, "onWorkletReply")
     if (reply.optString("type") == "call") {
       val extras = Bundle().apply {
         putParcelable(
@@ -46,18 +55,27 @@ class MessagingService : BaseMessagingService(Worklet.Options()) {
     }
 
     try {
-      val notification = NotificationUtils.getPushNotification(applicationContext, reply.optString("title", "Default title"), reply.optString("body", "Default description"))
-      NotificationManagerUtils.notifyPushNotificationChannel(applicationContext, notification, 1)
+      notificationManager.notify(
+        PUSH_NOTIFICATION_CHANNEL,
+        1,
+        Notification.Builder(applicationContext, PUSH_NOTIFICATION_CHANNEL)
+          .setSmallIcon(android.R.drawable.ic_dialog_info)
+          .setContentTitle(reply.optString("title", "Default title"))
+          .setContentText(reply.optString("body", "Default description"))
+          .setAutoCancel(true)
+          .build()
+      )
     } catch (e: Exception) {
       throw RuntimeException(e)
     }
   }
 
   override fun onNewToken(token: String) {
-    Log.v("MessagingService", "Token: $token")
+    Log.v(TAG, "Token: $token")
   }
 
   companion object {
     private const val TAG = "MessagingService"
+    private const val PUSH_NOTIFICATION_CHANNEL = "push_notification"
   }
 }
