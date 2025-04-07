@@ -1,4 +1,4 @@
-console.log('Hello Android notifcations!')
+console.log('Hello Android notifications!')
 
 BareKit.on('push', (payload, reply) => {
   console.log('Notification received:', JSON.parse(payload))
