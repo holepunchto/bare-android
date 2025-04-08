@@ -21,6 +21,8 @@ class MainActivity : Activity() {
       requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
     }
 
+    voipManager.registerPhoneAccount("Bare Android")
+
     worklet = Worklet(null)
 
     try {
@@ -40,8 +42,6 @@ class MainActivity : Activity() {
     super.onResume()
 
     worklet.resume()
-
-    voipManager.registerPhoneAccount("Bare Android")
   }
 
   override fun onDestroy() {
